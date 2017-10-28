@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "413098554440",
+    "firebase_url": "https://serverforcompass.firebaseio.com",
+    "project_id": "serverforcompass",
+    "storage_bucket": "serverforcompass.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:413098554440:android:ab00483fc3a22dac",
+        "android_client_info": {
+          "package_name": "com.serverforcompass"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "413098554440-j1bqhameg1ok47fm7fq69t2ganogmqa7.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.serverforcompass",
+            "certificate_hash": "70522e94947bd5ffa67c11b1c811439826fbe45e"
+          }
+        },
+        {
+          "client_id": "413098554440-2t5qaj7ecah8mlhaj3v621ad1unnlcge.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDCWCi_iq6ieD-PBxTPB_qEbjtUyVFaznQ"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "413098554440-2t5qaj7ecah8mlhaj3v621ad1unnlcge.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
