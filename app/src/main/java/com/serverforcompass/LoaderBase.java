@@ -3,6 +3,7 @@ package com.serverforcompass;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
+import android.widget.Toast;
 
 
 import com.serverforcompass.hh.APIService;
@@ -18,6 +19,7 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 import static com.serverforcompass.MainActivity.*;
+import static com.serverforcompass.MainActivity.count;
 
 /**
  * Created by Севастьян on 06.10.2017.
@@ -41,10 +43,10 @@ public class LoaderBase {
             @Override
             public void onResponse(Call<PageV> call, Response<PageV> response) {
                 PageV page = response.body();
-                count=(page.getFound()/20)-1;
-                count=Math.min(count,98);
+                count=(page.getFound()/20);
+                count=Math.min(count,99);
                 percent = 100/(count*20);
-                //Log.i("code", percent+"");
+                Log.i("code", count+"");
                 GetIDthenVacancy(params, From, To);
             }
             @Override
@@ -59,7 +61,7 @@ public class LoaderBase {
 
     void GetIDthenVacancy(final String[] params, final ArrayList<String> stackfromfile, final ArrayList<Skill> countskills){
 
-        for(int i=1; i<count; i++){
+        for(int i=0; i<count; i++){
 
             Call<PageV> call = service.getListURL(params[0], i);
 
@@ -76,16 +78,26 @@ public class LoaderBase {
                                 @Override
                                 public void onResponse(Call<Vacancy> call, Response<Vacancy> response) {
                                     progress+=percent;
-                                    //Log.i("code", progress+"");
+                                    Log.i("code", params[1]+ " " + progress);
                                     if(progress>=98&&!add) {
                                         MainActivity.count++;
-                                        Log.i("code", countskills.size()+"inloader");
+                                        //Log.i("code", countskills.size()+"inloader");
                                         new MakeandDownFiles(params[1], countskills);
                                         add=true;
                                         Log.i("code", "write "+params[1]);
-                                        if(MainActivity.count==9){
-
-                                        }
+                                        start(MainActivity.count);
+                                        Handler handler = new Handler(Looper.getMainLooper());
+                                        handler.post( new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                if(MainActivity.count==8){
+                                                    Toast.makeText(MainActivity.context, "Готово", Toast.LENGTH_SHORT).show();
+                                                }
+                                                else {
+                                                    Toast.makeText(MainActivity.context, "Начинаем загрузку "+MainActivity.count, Toast.LENGTH_SHORT).show();
+                                                }
+                                            }
+                                        } );
                                     }
                                     String description = response.body().getDescription();
                                     //Log.i("code", description + " " + stackfromfile.size());
@@ -105,7 +117,7 @@ public class LoaderBase {
                                             }
                                             if(!meet){
                                                 countskills.add(newskill);
-                                                Log.i("code",newskill.getSkill());
+                                                //Log.i("code",newskill.getSkill());
                                             }
                                         }
                                     }
@@ -118,15 +130,27 @@ public class LoaderBase {
                         }
                         else {
                             progress+=percent;
-                            //Log.i("code", progress+"");
+                            Log.i("code", params[1]+ " " + progress);
                             if(progress>=97&&!add) {
                                 MainActivity.count++;
                                 new MakeandDownFiles(params[1], countskills);
                                 add=true;
-                                Log.i("code", "write "+params[1]);
-                                if(MainActivity.count==9){
+                                start(MainActivity.count);
+                                Handler handler = new Handler(Looper.getMainLooper());
+                                handler.post( new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        if(MainActivity.count==8){
+                                            Toast.makeText(MainActivity.context, "Готово", Toast.LENGTH_SHORT).show();
 
-                                }
+                                        }
+                                        else {
+                                            Toast.makeText(MainActivity.context, "Начинаем загрузку "+MainActivity.count, Toast.LENGTH_SHORT).show();
+                                        }
+                                    }
+                                } );
+                                Log.i("code", "write "+params[1]);
+
                             }
                         }
                     }

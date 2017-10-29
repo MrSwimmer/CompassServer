@@ -1,7 +1,15 @@
 package com.serverforcompass;
 
+import android.net.Uri;
 import android.os.Environment;
+import android.support.annotation.NonNull;
 import android.util.Log;
+
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -14,9 +22,10 @@ import java.util.ArrayList;
  */
 
 public class MakeandDownFiles {
-
+    private StorageReference mStorageRef;
     String DIR_SD = "CompassITServ";
     public MakeandDownFiles(String param, ArrayList<Skill> countskills) {
+        mStorageRef = FirebaseStorage.getInstance().getReference();
         Log.i("code", countskills.size()+"size");
         writeFileSD(param+".txt", countskills);
     }
@@ -47,6 +56,23 @@ public class MakeandDownFiles {
             // закрываем поток
             bw.close();
             Log.i("code", "Файл записан на SD: " + sdFile.getAbsolutePath());
+            StorageReference riversRef = mStorageRef.child("countstack/"+name);
+            riversRef.putFile(Uri.fromFile(sdFile))
+                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                            // Get a URL to the uploaded content
+                            Log.i("code", "загрзка на firebase: OK");
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception exception) {
+                            // Handle unsuccessful uploads
+                            Log.i("code", "загрзка на firebase: FAIL");
+                            // ...
+                        }
+                    });
         } catch (IOException e) {
             e.printStackTrace();
         }
